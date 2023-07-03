@@ -1,7 +1,6 @@
 import React from "react";
 import { DropdownItem, DropdownToggle, DropdownMenu, UncontrolledDropdown } from "reactstrap";
 import { Icon } from "../../../Component";
-import { LineChart } from "../../charts/default/Charts";
 
 const SalesOverview = () => {
   return (
@@ -93,9 +92,6 @@ const SalesOverview = () => {
             1,937 <small>Subscribers</small>
           </span>
         </div>
-      </div>
-      <div className="nk-sales-ck large pt-4">
-        <LineChart />
       </div>
     </React.Fragment>
   );
