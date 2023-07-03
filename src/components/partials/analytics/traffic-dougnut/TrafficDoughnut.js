@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem } from "reactstrap";
-import { TCDoughnut } from "../../charts/analytics/AnalyticsCharts";
 
 const TrafficDougnut = () => {
   const [traffic, setTraffic] = useState("30");
@@ -55,9 +54,6 @@ const TrafficDougnut = () => {
         </UncontrolledDropdown>
       </div>
       <div className="traffic-channel">
-        <div className="traffic-channel-doughnut-ck">
-          <TCDoughnut state={traffic} className="analytics-doughnut"></TCDoughnut>
-        </div>
         <div className="traffic-channel-group g-2">
           <div className="traffic-channel-data">
             <div className="title">

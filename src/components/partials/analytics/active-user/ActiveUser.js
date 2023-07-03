@@ -1,6 +1,5 @@
 import React from "react";
 import { Icon, TooltipComponent } from "../../../Component";
-import { ActiveUserBarChart } from "../../charts/analytics/AnalyticsCharts";
 
 const ActiveUser = () => {
   return (
@@ -43,9 +42,6 @@ const ActiveUser = () => {
               <Icon name="arrow-long-up"></Icon>3.45%
             </div>
           </div>
-        </div>
-        <div className="analytic-au-ck">
-          <ActiveUserBarChart />
         </div>
         <div className="chart-label-group">
           <div className="chart-label">01 Jan, 2020</div>

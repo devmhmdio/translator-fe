@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Icon from "../../../icon/Icon";
 import { UncontrolledDropdown, CardTitle, DropdownMenu, DropdownItem, DropdownToggle } from "reactstrap";
-import { StackedBarChart } from "../../charts/default/Charts";
 
 const UserActivity = () => {
   const [userActivity, setUserActivity] = useState("");
@@ -96,9 +95,6 @@ const UserActivity = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="user-activity-ck">
-        <StackedBarChart state={userActivity} />
       </div>
     </React.Fragment>
   );

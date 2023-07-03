@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Icon from "../../../icon/Icon";
 import { UncontrolledDropdown, CardTitle, DropdownMenu, DropdownItem, DropdownToggle } from "reactstrap";
-import { DoubleBar } from "../../charts/default/Charts";
 import { Row, Col } from "../../../grid/Grid";
 import { Link } from "react-router-dom";
 
@@ -58,9 +57,6 @@ const OrderOverview = () => {
       <div className="nk-order-ovwg">
         <Row className="g-4 align-end">
           <Col xxl="8">
-            <div className="nk-order-ovwg-ck">
-              <DoubleBar state={orderOverview} />
-            </div>
           </Col>
           <Col xxl="4">
             <Row className="g-4">

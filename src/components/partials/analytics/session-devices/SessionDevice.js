@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { SessionDoughnut } from "../../charts/analytics/AnalyticsCharts";
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import { Icon } from "../../../Component";
 
@@ -58,9 +57,6 @@ const SessionDevice = () => {
         </UncontrolledDropdown>
       </div>
       <div className="device-status my-auto">
-        <div className="device-status-ck">
-          <SessionDoughnut className="analytics-doughnut" state={sessionDevice} />
-        </div>
         <div className="device-status-group">
           <div className="device-status-data">
             <Icon style={{ color: "#164954" }} name="monitor"></Icon>

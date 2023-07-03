@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { AudienceLineChart } from "../../charts/analytics/AnalyticsCharts";
 import { Icon } from "../../../Component";
 
 const AudienceOverview = () => {
@@ -70,9 +69,6 @@ const AudienceOverview = () => {
               <Icon name="arrow-long-down"></Icon> {auOverview === "month-1" ? "0.35" : "1.21"}%
             </div>
           </div>
-        </div>
-        <div className="analytic-ov-ck">
-          <AudienceLineChart state={auOverview} />
         </div>
         <div className="chart-label-group ms-5">
           <div className="chart-label">01 Jan, 2020</div>
