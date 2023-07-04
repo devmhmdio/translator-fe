@@ -201,8 +201,8 @@ const WriterScreenPage = () => {
                       >
                         <UserAvatar className="sq" />
                         <div className="project-info">
-                          <h6 className="title">Title</h6>
-                          <span className="sub-text">Subtitle</span>
+                          <h6 className="title">Name</h6>
+                          <span className="sub-text">ITS</span>
                         </div>
                       </a>
                     </div>
@@ -212,7 +212,7 @@ const WriterScreenPage = () => {
                       className="form-control form-control-sm"
                       id="cf-default-textarea"
                       placeholder="Write your message"
-                      rows={10 }
+                      rows={25}
                     ></textarea>
                     <br />
                     <Button color="primary" size="lg">
