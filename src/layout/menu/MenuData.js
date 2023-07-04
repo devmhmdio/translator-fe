@@ -14,6 +14,11 @@ const menu = [
     text: "Add New Writer",
     link: "/add-writer",
   },
+  {
+    icon: "user-round",
+    text: "Main Screen",
+    link: "/main-screen",
+  }
   // {
   //   text: "Writters Screens",
   //   link: "/project-card",

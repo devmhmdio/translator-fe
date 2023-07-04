@@ -55,6 +55,7 @@ import SVGIconPage from "../pages/components/crafted-icons/SvgIcons";
 import ProjectCardPage from "../pages/pre-built/projects/ProjectCard";
 import ProjectListPage from "../pages/pre-built/projects/ProjectList";
 import RegisterNewUserPage from "../pages/pre-built/projects/Registeration";
+import MainScreenPage from "../pages/pre-built/projects/MainScreen";
 import UserListRegular from "../pages/pre-built/user-manage/UserListRegular";
 import UserContactCard from "../pages/pre-built/user-manage/UserContactCard";
 import UserDetails from "../pages/pre-built/user-manage/UserDetailsRegular";
@@ -113,10 +114,12 @@ const Router = () => {
         <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
           <Route index element={<Homepage />}></Route>
 
-          <Route path="project-card" element={<ProjectCardPage />}></Route>
+          <Route path="project-card/admin" element={<ProjectCardPage />}></Route>
           <Route path="writer-screen" element={<WriterScreenPage />}></Route>
           <Route path="project-list" element={<ProjectListPage />}></Route>
           <Route path="add-writer" element={<RegisterNewUserPage />}></Route>
+          <Route path="main-screen" element={<MainScreenPage/>}></Route>
+          
           
 
           

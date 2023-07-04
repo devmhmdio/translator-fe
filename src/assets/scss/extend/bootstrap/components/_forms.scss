@@ -286,7 +286,11 @@ $form-control-select-icon: $ni-chevron-down !default;
 }
 
 textarea{
-    &.no-resize{
+    &.main-screen{
+        min-height: fit-content;
+        font-size: 150px;
+        line-height: 170px;
+    }&.no-resize{
         resize: none;
     }
     &.form-control{
@@ -302,6 +306,7 @@ textarea{
     &.textarea-auto{
         min-height: 0;
     }
+
 }
 
 // validation
