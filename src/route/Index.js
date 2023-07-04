@@ -2,7 +2,6 @@ import React, { useLayoutEffect } from "react";
 import { Routes,Route, useLocation } from "react-router-dom";
 
 import ProjectCardPage from "../pages/pre-built/projects/ProjectCard";
-import ProjectListPage from "../pages/pre-built/projects/ProjectList";
 import RegisterNewUserPage from "../pages/pre-built/projects/Registeration";
 import MainScreenPage from "../pages/pre-built/projects/MainScreen";
 
@@ -29,7 +28,6 @@ const Router = () => {
         <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
           <Route path="admin" element={<ProjectCardPage />}></Route>
           <Route path="writer-screen" element={<WriterScreenPage />}></Route>
-          <Route path="project-list" element={<ProjectListPage />}></Route>
           <Route path="add-writer" element={<RegisterNewUserPage />}></Route>
           <Route index element={<MainScreenPage/>}></Route>
         </Route>
