@@ -18,44 +18,55 @@ import { findUpper } from "../../../utils/Utils";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
 const WriterScreenPage = () => {
   const [sm, updateSm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [padContent, setPadContent] = useState("");
+  const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
   let token;
   let decodedToken;
   const [data, setData] = useState([]);
   token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   useEffect(() => {
-    if (token) {
-      decodedToken = jwt_decode(token);
-      const currentDate = new Date();
-      const expiryDate = new Date(decodedToken.exp * 1000);
-      if (expiryDate < currentDate) {
-        navigate("/auth-login");
-      } else if (decodedToken.userRole !== "writer") {
+    const fetchData = async () => {
+      if (token) {
+        decodedToken = jwt_decode(token);
+        const currentDate = new Date();
+        const expiryDate = new Date(decodedToken.exp * 1000);
+        if (expiryDate < currentDate) {
+          navigate("/auth-login");
+        } else if (decodedToken.userRole !== "writer") {
+          navigate("/auth-login");
+        }
+      } else {
         navigate("/auth-login");
       }
-    } else {
-      navigate("/auth-login");
-    }
 
-    axios({
-      method: "get",
-      url: `https://backend-23e46.ondigitalocean.app/user/${decodedToken.id}`,
-    })
-      .then((res) => {
+      try {
+        const res = await axios.get(`https://backend-23e46.ondigitalocean.app/user/${decodedToken.id}`);
+
         if (res.data.message === "Invalid token specified") {
           navigate("/auth-login");
         }
         setData([res.data]);
         setIsLoading(false);
-      })
-      .catch((e) => {
+      } catch (e) {
         navigate("/auth-login");
-      });
+      }
+    };
+
+    fetchData();
   }, [token, navigate]);
+
+  useEffect(() => {
+    if (data[0] && data[0]._id) {
+      socket.emit('update_pad', { writer: data[0]._id, content: padContent });
+      console.log('line 67');
+    }
+  }, [padContent, data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -108,6 +119,8 @@ const WriterScreenPage = () => {
                       id="cf-default-textarea"
                       placeholder="Write your translations..."
                       rows={25}
+                      value={padContent}
+                      onChange={(e) => setPadContent(e.target.value)}
                     ></textarea>
                     <br />
                     <Button color="primary" size="lg">

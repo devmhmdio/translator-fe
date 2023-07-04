@@ -16,6 +16,7 @@ import {
   Col,
   PaginationComponent,
 } from "../../../components/Component";
+import socketIOClient from 'socket.io-client';
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import axios from "axios";
 import { findUpper } from "../../../utils/Utils";
@@ -51,6 +52,24 @@ const ProjectCardPage = () => {
       })
       .catch((e) => console.log(e));
   }, []);
+
+  const [pads, setPads] = useState({});
+
+  const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
+
+  useEffect(() => {
+    socket.on('update_pad', (updatedPad) => {
+      console.log('line 62', updatedPad)
+      setPads(prevPads => ({
+        ...prevPads, 
+        [updatedPad.writer]: updatedPad.content
+      }));
+    });
+  
+    return () => {
+      socket.off('update_pad');
+    };
+  }, []);  
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
@@ -91,7 +110,7 @@ const ProjectCardPage = () => {
               currentItems.map((item, idx) => {
                 return (
                   <Col lg="6" key={item.id}>
-                    <ProjectCard>
+                    <ProjectCard key={item.id}>
                       <div className="project-head">
                         <a
                           href="#title"
@@ -140,13 +159,13 @@ const ProjectCardPage = () => {
                       </div>
                       <div className="project-details">
                         <div className="form-control-wrap">
-                          <textarea
-                            className="form-control form-control-sm"
-                            id="cf-default-textarea"
-                            placeholder="Write your message"
-                            disabled="true"
-                            rows={10}
-                          ></textarea>
+                        <textarea
+                          className="form-control form-control-sm"
+                          id="cf-default-textarea"
+                          disabled="true"
+                          rows={10}
+                          value={pads[item._id] || ''}
+                        ></textarea>
                         </div>
                       </div>
                     </ProjectCard>
