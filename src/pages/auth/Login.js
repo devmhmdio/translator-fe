@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/ITS_Logo_Golden.png";
 import Head from "../../layout/head/Head";
@@ -14,34 +14,42 @@ import {
 } from "../../components/Component";
 import { Form, Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ProjectCardPage from "../pre-built/projects/ProjectCard";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const navigate = useNavigate();
 
   const onFormSubmit = (formData) => {
     setLoading(true);
-    const loginName = "info@softnio.com";
-    const pass = "123456";
-    if (formData.name === loginName && formData.passcode === pass) {
-      localStorage.setItem("accessToken", "token");
-      setTimeout(() => {
-        window.history.pushState(
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
-          "auth-login",
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
-        );
-        window.location.reload();
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        setError("Cannot login with credentials");
-        setLoading(false);
-      }, 1000);
-    }
+    axios({
+      method: "get",
+      url: `https://backend-23e46.ondigitalocean.app/its-user?its=${formData.its}`
+    }).then(res => {
+      if (formData.its == res.data.user.its && formData.passcode == res.data.user.password) {
+        console.log('token', res.data.token)
+        localStorage.setItem("accessToken", res.data.token);
+        setTimeout(() => {
+          if (res.data.user.userRole === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/writer-screen")
+          }
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          setError("Cannot login with credentials");
+          setLoading(false);
+        }, 1000);
+      }
+    }).catch(e => console.log(e))
+    
   };
 
   const {  register, handleSubmit, formState: { errors } } = useForm();
@@ -83,9 +91,8 @@ const Login = () => {
                 <input
                   type="text"
                   id="default-01"
-                  {...register('name', { required: "This field is required" })}
-                  defaultValue="info@softnio.com"
-                  placeholder="Enter your email address or username"
+                  {...register('its', { required: "This field is required" })}
+                  placeholder="Enter your ITS"
                   className="form-control-lg form-control" />
                 {errors.name && <span className="invalid">{errors.name.message}</span>}
               </div>
@@ -116,8 +123,7 @@ const Login = () => {
                   type={passState ? "text" : "password"}
                   id="password"
                   {...register('passcode', { required: "This field is required" })}
-                  defaultValue="123456"
-                  placeholder="Enter your passcode"
+                  placeholder="Enter your password"
                   className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`} />
                 {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
               </div>
