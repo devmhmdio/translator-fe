@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "../../../layout/head/Head";
 import Content from "../../../layout/content/Content";
 import {
@@ -27,6 +27,9 @@ import {
   Badge
 } from "reactstrap";
 import FormModal from "./FormModal";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const WriterScreenPage = () => {
   const [sm, updateSm] = useState(false);
@@ -34,8 +37,34 @@ const WriterScreenPage = () => {
     add: false,
     edit: false,
   });
+  const [data, setData] = useState([]);
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    const decodedToken = jwt_decode(token);
+    const currentDate = new Date();
+    const expiryDate = new Date(decodedToken.exp * 1000);
+    if (expiryDate < currentDate) {
+      navigate('/auth-login');
+    }
+  } else {
+    navigate('/auth-login');
+  }
+  const decoded = jwt_decode(token);
+  const navigate = useNavigate();
+  if (decoded.userRole !== 'writer') {
+    navigate('/auth-login')
+  }
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `https://backend-23e46.ondigitalocean.app/user/${decoded.id}`,
+    })
+      .then((res) => {
+        setData([res.data]);
+      })
+      .catch((e) => console.log(e));
+  }, []);
   const [editId, setEditedId] = useState();
-  const [data, setData] = useState(projectData);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
   const [formData, setFormData] = useState({
@@ -172,8 +201,7 @@ const WriterScreenPage = () => {
       <BlockHead size="sm">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle page> Screens</BlockTitle>
-            <BlockDes className="text-soft">You have total {data.length} screens</BlockDes>
+            <BlockTitle page>{data[0].name}'s Screen</BlockTitle>
           </BlockHeadContent>
           <BlockHeadContent>
             <div className="toggle-wrap nk-block-tools-toggle">
@@ -199,10 +227,10 @@ const WriterScreenPage = () => {
                         }}
                         className="project-title"
                       >
-                        <UserAvatar className="sq" />
+                        <UserAvatar className="sq" text={findUpper(data[0].name)} />
                         <div className="project-info">
-                          <h6 className="title">Name</h6>
-                          <span className="sub-text">ITS</span>
+                          <h6 className="title">{data[0].name}</h6>
+                          <span className="sub-text">{data[0].its}</span>
                         </div>
                       </a>
                     </div>
@@ -211,7 +239,7 @@ const WriterScreenPage = () => {
                     <textarea
                       className="form-control form-control-sm"
                       id="cf-default-textarea"
-                      placeholder="Write your message"
+                      placeholder="Write your translations..."
                       rows={25}
                     ></textarea>
                     <br />
