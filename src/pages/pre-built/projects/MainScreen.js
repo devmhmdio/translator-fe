@@ -4,7 +4,7 @@ import { Block, Row, ProjectCard, Col } from "../../../components/Component";
 
 const MainScreenPage = () => {
   return (
-    <Content>
+    <Content id="main-screen-page">
       <Block>
         <Row className="g-gs">
           <Col lg="12">
@@ -14,8 +14,9 @@ const MainScreenPage = () => {
                   <textarea
                     className="form-control form-control-sm main-screen"
                     id="cf-default-textarea"
-                    placeholder="Write your message"
-                    rows={4}
+                    placeholder="No preview available"
+                    rows={5}
+                    disabled={true}
                   ></textarea>
                 </div>
               </div>

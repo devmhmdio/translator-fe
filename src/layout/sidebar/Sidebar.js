@@ -4,6 +4,7 @@ import SimpleBar from "simplebar-react";
 import Logo from "../logo/Logo";
 import Menu from "../menu/Menu";
 import Toggle from "./Toggle";
+import { useLocation } from "react-router-dom";
 
 import { useTheme, useThemeUpdate } from '../provider/Theme';
 
@@ -11,8 +12,13 @@ const Sidebar = ({ fixed, className, ...props }) => {
 
   const theme = useTheme();
   const themeUpdate = useThemeUpdate();
-
+  const location = useLocation();
   const [mouseEnter, setMouseEnter] = useState(false);
+
+  // If the location.pathname is '/main-screen', don't render Sidebar.
+  if (location.pathname === '/') {
+    return null;
+  }
 
   const handleMouseEnter = () => setMouseEnter(true);
   const handleMouseLeave = () => setMouseEnter(false);
