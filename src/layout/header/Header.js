@@ -12,6 +12,7 @@ const Header = ({ fixed, className, ...props }) => {
   const theme = useTheme();
   const themeUpdate = useThemeUpdate();
   const location = useLocation();
+  const token = localStorage.getItem("accessToken");
 
   if (location.pathname === "/") {
     return null;

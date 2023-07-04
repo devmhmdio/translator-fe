@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserAvatar from "../../../../components/user/UserAvatar";
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
 import { Icon } from "../../../../components/Component";
-import { LinkList, LinkItem } from "../../../../components/links/Links";
+import { LinkList } from "../../../../components/links/Links";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
+  const [data, setData] = useState("");
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const decodedToken = jwt_decode(token);
+    axios({
+      method: "get",
+      url: `https://backend-23e46.ondigitalocean.app/user/${decodedToken.id}`,
+    })
+      .then((response) => setData(response.data))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
@@ -25,8 +40,8 @@ const User = () => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Mohammed Rafique</div>
+            <div className="user-status">{data.userRole}</div>
+            <div className="user-name dropdown-indicator">{data.name}</div>
           </div>
         </div>
       </DropdownToggle>
@@ -37,19 +52,19 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Mohammed Rafique</span>
-              <span className="sub-text">info@buildyourinnovation.com</span>
+              <span className="lead-text">{data.name}</span>
+              <span className="sub-text">{data.its}</span>
             </div>
           </div>
         </div>
         <div className="dropdown-inner">
           <LinkList>
-            <LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
+            {/*<LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
               View Profile
             </LinkItem>
             <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
               Account Setting
-            </LinkItem>
+      </LinkItem>*/}
           </LinkList>
         </div>
         <div className="dropdown-inner">
