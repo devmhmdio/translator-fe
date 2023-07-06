@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
 import { Block, Row, ProjectCard, Col } from "../../../components/Component";
+import socketIOClient from 'socket.io-client';
 
 const MainScreenPage = () => {
+  const [content, setContent] = useState('No preview available');
+
+  useEffect(() => {
+    const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
+
+    socket.on('cast_screen', (padContent) => {
+      setContent(padContent);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <Content id="main-screen-page">
       <Block>
@@ -14,7 +29,7 @@ const MainScreenPage = () => {
                   <textarea
                     className="form-control form-control-sm main-screen"
                     id="cf-default-textarea"
-                    placeholder="No preview available"
+                    value={content || ''}
                     rows={5}
                     disabled={true}
                   ></textarea>

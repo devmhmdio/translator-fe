@@ -22,6 +22,7 @@ import axios from "axios";
 import { findUpper } from "../../../utils/Utils";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
 
 const ProjectCardPage = () => {
   const [sm, updateSm] = useState(false);
@@ -59,7 +60,6 @@ const ProjectCardPage = () => {
 
   useEffect(() => {
     socket.on('update_pad', (updatedPad) => {
-      console.log('line 62', updatedPad)
       setPads(prevPads => ({
         ...prevPads, 
         [updatedPad.writer]: updatedPad.content
@@ -69,7 +69,16 @@ const ProjectCardPage = () => {
     return () => {
       socket.off('update_pad');
     };
-  }, []);  
+  }, []);
+  
+  const handleCastScreen = (writerId) => {
+    socket.emit('cast_screen_request', { writerId });
+  }
+
+  const handleStopCast = () => {
+    socket.emit('stop_cast');
+  };
+  
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
@@ -135,7 +144,10 @@ const ProjectCardPage = () => {
                           <DropdownMenu end>
                             <ul className="link-list-opt no-bdr">
                               <li>
-                                <DropdownItem tag="a" href="#edit">
+                                <DropdownItem
+                                  tag="a"
+                                  onClick={() => handleCastScreen(item._id)}
+                                >
                                   <Icon name="edit"></Icon>
                                   <span>Cast Screen</span>
                                 </DropdownItem>
@@ -144,10 +156,7 @@ const ProjectCardPage = () => {
                               <li>
                                 <DropdownItem
                                   tag="a"
-                                  href="#markasdone"
-                                  onClick={(ev) => {
-                                    ev.preventDefault();
-                                  }}
+                                  onClick={() => handleStopCast(item._id)}
                                 >
                                   <Icon name="check-round-cut"></Icon>
                                   <span>Stop Cast</span>
