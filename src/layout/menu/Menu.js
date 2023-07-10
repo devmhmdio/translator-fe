@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import menu from "./MenuData";
 import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
 import { NavLink, Link } from "react-router-dom";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -200,6 +202,19 @@ const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props })
 };
 
 const Menu = ({ sidebarToggle, mobileView }) => {
+  const token = localStorage.getItem("accessToken");
+  const decoded = jwt_decode(token);
+  const [userRole, setUserRole] = useState("");
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `https://backend-23e46.ondigitalocean.app/user/${decoded.id}`,
+    })
+      .then((response) => setUserRole(response.data.userRole))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <ul className="nk-menu">
       {menu.map((item) =>
@@ -217,6 +232,11 @@ const Menu = ({ sidebarToggle, mobileView }) => {
             mobileView={mobileView}
           />
         )
+      )}
+      {userRole === "admin" && (
+        <>
+          <MenuItem key="add writer" link="add-writer" icon="user-list" text="Add Writers" />
+        </>
       )}
     </ul>
   );
