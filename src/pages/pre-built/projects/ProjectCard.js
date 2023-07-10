@@ -27,6 +27,7 @@ const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
 const ProjectCardPage = () => {
   const [sm, updateSm] = useState(false);
   const [data, setData] = useState([]);
+  const [padContent, setPadContent] = useState(null);
   const token = localStorage.getItem("accessToken");
   if (token) {
     const decodedToken = jwt_decode(token);
@@ -70,9 +71,19 @@ const ProjectCardPage = () => {
       socket.off('update_pad');
     };
   }, []);
+
+  useEffect(() => {
+    socket.on('cast_screen', content => {
+      setPadContent(content);
+    });
+  
+    return () => {
+      socket.off('cast_screen');
+    };
+  }, []);
   
   const handleCastScreen = (writerId) => {
-    socket.emit('cast_screen_request', { writerId });
+    socket.emit('cast_screen_request', { writerId, pads });
   }
 
   const handleStopCast = () => {
