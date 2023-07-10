@@ -34,7 +34,7 @@ const MainScreenPage = () => {
   // }, []);
 
   useEffect(() => {
-    const socket = socketIOClient('http://localhost:8000');
+    const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
   
     socket.on('cast_screen', (padContent) => {
       setContent(padContent);
