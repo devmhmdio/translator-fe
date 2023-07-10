@@ -69,7 +69,7 @@ const Login = () => {
             <BlockContent>
               <BlockTitle tag="h4">Sign-In</BlockTitle>
               <BlockDes>
-                <p>Access Translator App using your ITS and password.</p>
+                <p>Access Transcriptions App using your ITS and password.</p>
               </BlockDes>
             </BlockContent>
           </BlockHead>

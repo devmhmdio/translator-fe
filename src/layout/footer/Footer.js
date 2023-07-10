@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="nk-footer-wrap justify-content-center">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2023 Translator App
+            &copy; 2023 Transcriptions App
           </div>
         </div>
       </div>
