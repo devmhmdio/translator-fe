@@ -20,32 +20,21 @@ const MainScreenPage = () => {
   // const textAreaRef = useRef(null);  // create ref
   const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
 
-  // useEffect(() => {
-  //   console.log('socket connected')
-  //   socket.on('cast_screen', (padContent) => {
-  //     // console.log('Received padContent:', padContent);
-  //     // setContent(padContent);
-  //     dispatch({ type: 'SET_CONTENT', payload: padContent });
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   useEffect(() => {
-    const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
-  
     socket.on('cast_screen', (padContent) => {
+      console.log(`Received cast_screen event: ${padContent}`);
       setContent(padContent);
     });
-  
+
     return () => {
       socket.disconnect();
     };
   }, []);
-  
 
+  useEffect(() => {
+    console.log(`Content updated: ${content}`);
+  }, [content]);  
+  
   // useEffect(() => {
   //   if(textAreaRef.current) {
   //     textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight; // auto scroll
