@@ -15,23 +15,36 @@ function reducer(state, action) {
 }
 
 const MainScreenPage = () => {
-  const [content, dispatch] = useReducer(reducer, initialState);
-  // const [content, setContent] = useState('No preview available');
+  // const [content, dispatch] = useReducer(reducer, initialState);
+  const [content, setContent] = useState('No preview available');
   // const textAreaRef = useRef(null);  // create ref
   const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
 
-  useEffect(() => {
-    console.log('socket connected')
-    socket.on('cast_screen', (padContent) => {
-      // console.log('Received padContent:', padContent);
-      // setContent(padContent);
-      dispatch({ type: 'SET_CONTENT', payload: padContent });
-    });
+  // useEffect(() => {
+  //   console.log('socket connected')
+  //   socket.on('cast_screen', (padContent) => {
+  //     // console.log('Received padContent:', padContent);
+  //     // setContent(padContent);
+  //     dispatch({ type: 'SET_CONTENT', payload: padContent });
+  //   });
 
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const socket = socketIOClient('http://localhost:8000');
+  
+    socket.on('cast_screen', (padContent) => {
+      setContent(padContent);
+    });
+  
     return () => {
       socket.disconnect();
     };
   }, []);
+  
 
   // useEffect(() => {
   //   if(textAreaRef.current) {
