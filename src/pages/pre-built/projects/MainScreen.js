@@ -1,27 +1,16 @@
-import React, { useEffect, useState, useRef, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
-import { Block, Row, ProjectCard, Col } from "../../../components/Component";
-import socketIOClient from 'socket.io-client';
-
-const initialState = 'No preview available';
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'SET_CONTENT':
-      return action.payload;
-    default:
-      return state;
-  }
-}
+import { Block, Row, ProjectCard, Col, BlockHead, BlockBetween, BlockHeadContent, BlockTitle, Button, Icon } from "../../../components/Component";
+import socketIOClient from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const MainScreenPage = () => {
-  // const [content, dispatch] = useReducer(reducer, initialState);
-  const [content, setContent] = useState('No preview available');
-  // const textAreaRef = useRef(null);  // create ref
-  const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
+  const [content, setContent] = useState("No preview available");
+  const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    socket.on('cast_screen', (padContent) => {
+    socket.on("cast_screen", (padContent) => {
       console.log(`Received cast_screen event: ${padContent}`);
       setContent(padContent);
     });
@@ -30,9 +19,26 @@ const MainScreenPage = () => {
       socket.disconnect();
     };
   }, []);
-  
+
+  const onLoginClick = () => {
+    navigate("/auth-login");
+  };
+
   return (
     <Content id="main-screen-page">
+      <BlockHead size="sm">
+        <BlockBetween>
+          <BlockHeadContent>
+            <BlockTitle page>Login Area</BlockTitle>
+          </BlockHeadContent>
+          <BlockHeadContent>
+            <Button color="primary" onClick={onLoginClick}>
+            <span>Login</span>
+            <Icon name="user" />
+            </Button>
+          </BlockHeadContent>
+        </BlockBetween>
+      </BlockHead>
       <Block>
         <Row className="g-gs">
           <Col lg="12">
@@ -40,10 +46,9 @@ const MainScreenPage = () => {
               <div className="project-details">
                 <div className="form-control-wrap">
                   <textarea
-                    // ref={textAreaRef} // add ref to textarea
                     className="form-control form-control-sm main-screen"
                     id="cf-default-textarea"
-                    value={content || ''}
+                    value={content || ""}
                     rows={5}
                     disabled={true}
                   ></textarea>
