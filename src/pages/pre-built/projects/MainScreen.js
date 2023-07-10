@@ -30,17 +30,7 @@ const MainScreenPage = () => {
       socket.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    console.log(`Content updated: ${content}`);
-  }, [content]);  
   
-  // useEffect(() => {
-  //   if(textAreaRef.current) {
-  //     textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight; // auto scroll
-  //   }
-  // }, [content]); // whenever content changes, this useEffect will run and perform auto scroll
-
   return (
     <Content id="main-screen-page">
       <Block>
