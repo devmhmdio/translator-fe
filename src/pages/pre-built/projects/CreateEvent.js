@@ -102,6 +102,7 @@ const CreateNewEvent = () => {
               </Col>
             </Row>
           </PreviewCard>
+
           <CodeBlock>{`const Example () => {
       const options = {
         { value: "chocolate", label: "Chocolate" },
@@ -121,6 +122,42 @@ const CreateNewEvent = () => {
         <RSelect isMulti components={animatedComponents} options={options} 
       )
     }`}</CodeBlock>
+        </Block>
+        <Block size="lg">
+          <PreviewCard>
+            <Row className="gy-4">
+              <Col sm={6}>
+                <div className="form-group">
+                  <label className="form-label">Select Waaz</label>
+                  <RSelect options={defaultOptions} />
+                </div>
+              </Col>
+              <Col sm={6}>
+                <div className="form-group">
+                  <label className="form-label">Select Writer</label>
+                  <RSelect
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    defaultData={[colourData[0], colourData[1]]}
+                    isMulti
+                    options={colourData}
+                  />
+                </div>
+              </Col>
+              <Col sm={6}>
+                <div className="form-group">
+                  <label className="form-label">Select Hijri Date</label>
+                  <RSelect options={groupedData} />
+                </div>
+              </Col>
+              <Col sm={6}>
+                <div className="form-group">
+                  <label className="form-label">Select English Date</label>
+                  <RSelect options={defaultOptions} isMulti />
+                </div>
+              </Col>
+            </Row>
+          </PreviewCard>
         </Block>
       </Content>
     </>
