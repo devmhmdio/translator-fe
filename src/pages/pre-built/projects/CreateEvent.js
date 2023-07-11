@@ -12,7 +12,7 @@ import {
   OutlinedInput,
 } from "../../../components/Component";
 import { RSelect } from "../../../components/Component";
-import { defaultOptions, colourData, groupedData } from "../../components/forms/SelectData";
+import { WaazOption,defaultOptions, colourData, groupedData } from "../../components/forms/SelectData";
 import makeAnimated from "react-select/animated";
 
 const CreateNewEvent = () => {
@@ -129,7 +129,7 @@ const CreateNewEvent = () => {
               <Col sm={6}>
                 <div className="form-group">
                   <label className="form-label">Select Waaz</label>
-                  <RSelect options={defaultOptions} />
+                  <RSelect options={WaazOption} />
                 </div>
               </Col>
               <Col sm={6}>
@@ -153,7 +153,7 @@ const CreateNewEvent = () => {
               <Col sm={6}>
                 <div className="form-group">
                   <label className="form-label">Select English Date</label>
-                  <RSelect options={defaultOptions} isMulti />
+                  <RSelect options={defaultOptions} />
                 </div>
               </Col>
             </Row>

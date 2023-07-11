@@ -1,3 +1,16 @@
+export const WaazOption = [
+  { value: "Waaz 1", label: "Waaz 1" },
+  { value: "Waaz 2", label: "Waaz 2" },
+  { value: "Waaz 3", label: "Waaz 3" },
+  { value: "Waaz 4", label: "Waaz 4" },
+  { value: "Waaz 5", label: "Waaz 5" },
+  { value: "Waaz 6", label: "Waaz 6" },
+  { value: "Waaz 7", label: "Waaz 7" },
+  { value: "Waaz 8", label: "Waaz 8" },
+  { value: "Waaz 9", label: "Waaz 9" },
+  { value: "Waaz 10", label: "Waaz 10" },
+];
+
 export const defaultOptions = [
       { value: "18-July-2023", label: "18-July-2023" },
       { value: "19-July-2023", label: "19-July-2023" },
