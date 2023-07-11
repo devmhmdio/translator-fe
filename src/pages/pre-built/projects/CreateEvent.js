@@ -10,6 +10,7 @@ import {
   PreviewCard,
   CodeBlock,
   OutlinedInput,
+  Button
 } from "../../../components/Component";
 import { RSelect } from "../../../components/Component";
 import { WaazOption,defaultOptions, colourData, groupedData } from "../../components/forms/SelectData";
@@ -156,6 +157,11 @@ const CreateNewEvent = () => {
                   <RSelect options={defaultOptions} />
                 </div>
               </Col>
+              <Col xl="12">
+                  <Button color="primary" size="lg" type="submit">
+                    Create Writer
+                  </Button>
+                </Col>
             </Row>
           </PreviewCard>
         </Block>
