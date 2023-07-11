@@ -159,7 +159,7 @@ const CreateNewEvent = () => {
               </Col>
               <Col xl="12">
                   <Button color="primary" size="lg" type="submit">
-                    Create Writer
+                    Create Event
                   </Button>
                 </Col>
             </Row>
