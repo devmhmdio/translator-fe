@@ -145,7 +145,7 @@ const ProjectCardPage = () => {
                             <span className="sub-text">{item.its}</span>
                           </div>
                         </a>
-                        <UncontrolledDropdown>
+                        {/*<UncontrolledDropdown>
                           <DropdownToggle
                             tag="a"
                             className="dropdown-toggle btn btn-sm btn-icon btn-trigger mt-n1 me-n1"
@@ -175,7 +175,7 @@ const ProjectCardPage = () => {
                               </li>
                             </ul>
                           </DropdownMenu>
-                        </UncontrolledDropdown>
+                        </UncontrolledDropdown>*/}
                       </div>
                       <div className="project-details">
                         <div className="form-control-wrap">
@@ -187,7 +187,8 @@ const ProjectCardPage = () => {
                           value={pads[item._id] || ''}
                         ></textarea>
                         </div>
-                      </div>
+                        </div>
+                        <Button outline color="primary" onClick={() => handleCastScreen(item._id)}><Icon name="monitor"></Icon><span></span>Cast Screen</Button>
                     </ProjectCard>
                   </Col>
                 );
