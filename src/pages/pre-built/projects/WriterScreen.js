@@ -13,17 +13,20 @@ import {
   ProjectCard,
   UserAvatar,
   Col,
+  PreviewCard,
 } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { Card, CardBody, CardHeader, CardText, CardTitle } from "reactstrap";
 
 const WriterScreenPage = () => {
   const [sm, updateSm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [padContent, setPadContent] = useState("");
+  const [events, setEvents] = useState([]);
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
   let token;
   let decodedToken;
@@ -64,9 +67,17 @@ const WriterScreenPage = () => {
   useEffect(() => {
     if (data[0] && data[0]._id) {
       socket.emit('update_pad', { writer: data[0]._id, content: padContent });
-      console.log('line 67');
     }
   }, [padContent, data]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const decodedData = jwt_decode(token);
+    axios({
+      method: "get",
+      url: `https://backend-23e46.ondigitalocean.app/event-writer/${decodedData.name}`,
+    }).then(res => setEvents(res.data)).catch(() => {console.log('error')})
+  }, [])
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -131,6 +142,29 @@ const WriterScreenPage = () => {
               </ProjectCard>
             </Col>
           </Row>
+        </Block>
+        <Block size="lg">
+          <BlockHeadContent>
+            <BlockTitle>Events</BlockTitle>
+            &nbsp;
+          </BlockHeadContent>
+          <PreviewCard>
+            <Row className="g-gs">
+            {events.map((data) => (
+              <Col sm="6">
+                <Card className="card-bordered" color="light">
+                  <CardHeader>{data.hijriDate} | {data.englishDate}</CardHeader>
+                  <CardBody className="card-inner">
+                    <CardTitle tag="h5">{data.waaz}</CardTitle>
+                    <CardText>
+                      {data.content}
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </Col>
+            ))}
+            </Row>
+          </PreviewCard>
         </Block>
       </Content>
     </>

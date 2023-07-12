@@ -16,6 +16,7 @@ import Success from "../pages/auth/Success";
 import Layout from "../layout/Index";
 import LayoutNoSidebar from "../layout/Index-nosidebar";
 import WriterScreenPage from "../pages/pre-built/projects/WriterScreen";
+import CreateNewEvent from "../pages/pre-built/projects/CreateEvent";
 
 const Router = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const Router = () => {
           <Route path="admin" element={<ProjectCardPage />}></Route>
           <Route path="writer-screen" element={<WriterScreenPage />}></Route>
           <Route path="add-writer" element={<RegisterNewUserPage />}></Route>
+          <Route path="create-event" element={<CreateNewEvent />}></Route>
           <Route index element={<MainScreenPage/>}></Route>
         </Route>
         <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
