@@ -12,6 +12,10 @@ const MainScreenPage = () => {
   useEffect(() => {
     socket.on("cast_screen", (padContent) => {
       console.log(`Received cast_screen event: ${padContent}`);
+      const words = padContent.split(" ");
+      if (words.length > 15) {
+        padContent = words.slice(-15).join(" ");
+      }
       setContent(padContent);
     });
 
