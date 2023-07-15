@@ -16,33 +16,35 @@ import {
   Col,
   PaginationComponent,
 } from "../../../components/Component";
-import socketIOClient from 'socket.io-client';
+import socketIOClient from "socket.io-client";
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import axios from "axios";
 import { findUpper } from "../../../utils/Utils";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
+const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
 
 const ProjectCardPage = () => {
   const [sm, updateSm] = useState(false);
   const [data, setData] = useState([]);
   const [padContent, setPadContent] = useState(null);
+  const [casting, setCasting] = useState(false);
+  const [castingWriterId, setCastingWriterId] = useState(null);
   const token = localStorage.getItem("accessToken");
   if (token) {
     const decodedToken = jwt_decode(token);
     const currentDate = new Date();
     const expiryDate = new Date(decodedToken.exp * 1000);
     if (expiryDate < currentDate) {
-      navigate('/auth-login');
+      navigate("/auth-login");
     }
   } else {
-    navigate('/auth-login');
+    navigate("/auth-login");
   }
   const decoded = jwt_decode(token);
   const navigate = useNavigate();
-  if (decoded.userRole !== 'admin') {
-    navigate('/auth-login')
+  if (decoded.userRole !== "admin") {
+    navigate("/auth-login");
   }
   useEffect(() => {
     axios({
@@ -57,39 +59,42 @@ const ProjectCardPage = () => {
 
   const [pads, setPads] = useState({});
 
-  const socket = socketIOClient('https://backend-23e46.ondigitalocean.app');
+  const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
 
   useEffect(() => {
-    socket.on('update_pad', (updatedPad) => {
-      setPads(prevPads => ({
-        ...prevPads, 
-        [updatedPad.writer]: updatedPad.content
+    socket.on("update_pad", (updatedPad) => {
+      setPads((prevPads) => ({
+        ...prevPads,
+        [updatedPad.writer]: updatedPad.content,
       }));
     });
-  
+
     return () => {
-      socket.off('update_pad');
+      socket.off("update_pad");
     };
   }, []);
 
   useEffect(() => {
-    socket.on('cast_screen', content => {
+    socket.on("cast_screen", (content) => {
       setPadContent(content);
     });
-  
+
     return () => {
-      socket.off('cast_screen');
+      socket.off("cast_screen");
     };
   }, []);
-  
+
   const handleCastScreen = (writerId) => {
-    socket.emit('cast_screen_request', { writerId, pads });
-  }
+    socket.emit("cast_screen_request", { writerId, pads });
+    setCasting(true); // set casting to true when the casting begins
+    setCastingWriterId(writerId);
+  };
 
   const handleStopCast = () => {
-    socket.emit('stop_cast');
+    socket.emit("stop_cast");
+    setCasting(false); // set casting to false when the casting stops
+    setCastingWriterId(null);
   };
-  
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
@@ -145,50 +150,33 @@ const ProjectCardPage = () => {
                             <span className="sub-text">{item.its}</span>
                           </div>
                         </a>
-                        {/*<UncontrolledDropdown>
-                          <DropdownToggle
-                            tag="a"
-                            className="dropdown-toggle btn btn-sm btn-icon btn-trigger mt-n1 me-n1"
-                          >
-                            <Icon name="more-h"></Icon>
-                          </DropdownToggle>
-                          <DropdownMenu end>
-                            <ul className="link-list-opt no-bdr">
-                              <li>
-                                <DropdownItem
-                                  tag="a"
-                                  onClick={() => handleCastScreen(item._id)}
-                                >
-                                  <Icon name="edit"></Icon>
-                                  <span>Cast Screen</span>
-                                </DropdownItem>
-                              </li>
-
-                              <li>
-                                <DropdownItem
-                                  tag="a"
-                                  onClick={() => handleStopCast(item._id)}
-                                >
-                                  <Icon name="check-round-cut"></Icon>
-                                  <span>Stop Cast</span>
-                                </DropdownItem>
-                              </li>
-                            </ul>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>*/}
                       </div>
                       <div className="project-details">
                         <div className="form-control-wrap">
-                        <textarea
-                          className="form-control form-control-sm"
-                          id="cf-default-textarea"
-                          disabled="true"
-                          rows={10}
-                          value={pads[item._id] || ''}
-                        ></textarea>
+                          <textarea
+                            className="form-control form-control-sm"
+                            id="cf-default-textarea"
+                            disabled="true"
+                            rows={10}
+                            value={pads[item._id] || ""}
+                          ></textarea>
                         </div>
-                        </div>
-                        <Button outline color="primary" onClick={() => handleCastScreen(item._id)}><Icon name="monitor"></Icon><span></span>Cast Screen</Button>
+                      </div>
+                      <Button
+                        outline={!casting || castingWriterId !== item._id} // set outline to false if current screen is casting
+                        color={casting && castingWriterId === item._id ? "white" : "primary"} // set color to white if current screen is casting
+                        onClick={
+                          casting && castingWriterId === item._id ? handleStopCast : () => handleCastScreen(item._id)
+                        } // set onClick to handleStopCast if current screen is casting
+                      >
+                        <Icon name="monitor"></Icon>
+                        <span></span>
+                        {casting && castingWriterId === item._id ? "Casting" : "Cast Screen"}
+                      </Button>{" "}
+                      <Button outline color="primary" onClick={() => handleStopCast()}>
+                        <Icon name="cross"></Icon>
+                        <span></span>Stop Casting
+                      </Button>
                     </ProjectCard>
                   </Col>
                 );
