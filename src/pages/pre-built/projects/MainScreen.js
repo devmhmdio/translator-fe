@@ -64,7 +64,7 @@ const MainScreenPage = () => {
                     value={content || ""}
                     rows={5}
                     disabled={true}
-                    style={{ fontSize: `${fontSize}px`, color: "#000" }}
+                    style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none" }}
                   ></textarea>
                   <div className="font-size-buttons">
                     <Button color="primary" onClick={increaseFontSize}>A+</Button>
