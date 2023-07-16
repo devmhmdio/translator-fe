@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
-import { Block, Row, ProjectCard, Col, BlockHead, BlockBetween, BlockHeadContent, BlockTitle, Button, Icon } from "../../../components/Component";
+import {
+  Block,
+  Row,
+  ProjectCard,
+  Col,
+  Button,
+} from "../../../components/Component";
 import socketIOClient from "socket.io-client";
-import { useNavigate } from "react-router-dom";
 
 const MainScreenPage = () => {
   const [content, setContent] = useState("No preview available");
+  const [fontSize, setFontSize] = useState(150);
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
-  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("cast_screen", (padContent) => {
@@ -24,8 +29,12 @@ const MainScreenPage = () => {
     };
   }, []);
 
-  const onLoginClick = () => {
-    navigate("/auth-login");
+  const increaseFontSize = () => {
+    setFontSize(fontSize + 1);
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize(fontSize - 1);
   };
 
   return (
@@ -37,12 +46,12 @@ const MainScreenPage = () => {
           </BlockHeadContent>
           <BlockHeadContent>
             <Button color="primary" onClick={onLoginClick}>
-            <span>Login</span>
-            <Icon name="user" />
+              <span>Login</span>
+              <Icon name="user" />
             </Button>
           </BlockHeadContent>
         </BlockBetween>
-  </BlockHead>*/}
+      </BlockHead>*/}
       <Block>
         <Row className="g-gs">
           <Col lg="12">
@@ -55,7 +64,13 @@ const MainScreenPage = () => {
                     value={content || ""}
                     rows={5}
                     disabled={true}
+                    style={{ fontSize: `${fontSize}px` }}
                   ></textarea>
+                  <div className="font-size-buttons">
+                    <Button color="primary" onClick={increaseFontSize}>A+</Button>
+                    &nbsp;
+                    <Button color="primary" onClick={decreaseFontSize}>A-</Button>
+                  </div>
                 </div>
               </div>
             </ProjectCard>

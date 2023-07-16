@@ -251,3 +251,14 @@
         }
     }
 }
+
+.font-size-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateY(40%);
+  transform: translateX(-20%);
+}
