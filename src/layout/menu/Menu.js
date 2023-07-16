@@ -235,7 +235,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       )}
       {userRole === "admin" && (
         <>
-          <MenuItem key="admin" link="admin" icon="monitor" text="Admin" />
+          <MenuItem key="admin" link="admin" icon="monitor" text="Dashboard" />
           <MenuItem key="create event" link="create-event" icon="note-add" text="Create Event" />
           <MenuItem key="add writer" link="add-writer" icon="user-list" text="Add Writers" />
         </>
