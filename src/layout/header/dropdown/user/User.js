@@ -5,6 +5,7 @@ import { Icon } from "../../../../components/Component";
 import { LinkList } from "../../../../components/links/Links";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { findUpper } from "../../../../utils/Utils";
 
 const User = () => {
   const [open, setOpen] = useState(false);
@@ -49,7 +50,7 @@ const User = () => {
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>AB</span>
+              <span>{findUpper(data.name)}</span>
             </div>
             <div className="user-info">
               <span className="lead-text">{data.name}</span>
