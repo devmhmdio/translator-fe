@@ -11,6 +11,7 @@ const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
   const [data, setData] = useState("");
+  let nameInitials = "AB";
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const decodedToken = jwt_decode(token);
@@ -50,7 +51,8 @@ const User = () => {
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>{findUpper(data.name)}</span>
+              {/*<span>{findUpper(data.name)}</span>*/}
+              <span>{nameInitials}</span>
             </div>
             <div className="user-info">
               <span className="lead-text">{data.name}</span>
