@@ -261,4 +261,10 @@
   top: 0;
   transform: translateY(40%);
   transform: translateX(-20%);
+  opacity: 0;
 }
+
+.font-size-buttons:hover {
+    opacity: 1; /* make the buttons visible when hover over .form-control-wrap */
+}
+  
