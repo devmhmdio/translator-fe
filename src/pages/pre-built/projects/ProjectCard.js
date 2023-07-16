@@ -86,25 +86,23 @@ const ProjectCardPage = () => {
 
   const handleCastScreen = (writerId) => {
     socket.emit("cast_screen_request", { writerId, pads });
-    setCasting(true); // set casting to true when the casting begins
+    setCasting(true);
     setCastingWriterId(writerId);
   };
 
   const handleStopCast = () => {
     socket.emit("stop_cast");
-    setCasting(false); // set casting to false when the casting stops
+    setCasting(false);
     setCastingWriterId(null);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
 
-  // Get current list, pagination
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -162,20 +160,27 @@ const ProjectCardPage = () => {
                           ></textarea>
                         </div>
                       </div>
-                      <Button
-                        outline={!casting || castingWriterId !== item._id} // set outline to false if current screen is casting
-                        color={casting && castingWriterId === item._id ? "white" : "primary"} // set color to white if current screen is casting
+                      {/*<Button
+                        outline={!casting || castingWriterId !== item._id}
+                        color={casting && castingWriterId === item._id ? "white" : "primary"}
                         onClick={
                           casting && castingWriterId === item._id ? handleStopCast : () => handleCastScreen(item._id)
-                        } // set onClick to handleStopCast if current screen is casting
+                        }
                       >
-                        <Icon name="monitor"></Icon>
+                        <Icon name="play"></Icon>
                         <span></span>
-                        {casting && castingWriterId === item._id ? "Casting" : "Cast Screen"}
-                      </Button>{" "}
-                      <Button outline color="primary" onClick={() => handleStopCast()}>
-                        <Icon name="cross"></Icon>
-                        <span></span>Stop Casting
+                        {casting && castingWriterId === item._id ? "Live" : "Cast Screen"}
+                      </Button>*/}
+
+                      <Button
+                        style={casting && castingWriterId === item._id 
+                                ? { backgroundColor: '#164954', color: '#fff' } 
+                                : { borderColor: '#164954', borderWidth: '1px' }}
+                        onClick={casting && castingWriterId === item._id ? handleStopCast : () => handleCastScreen(item._id)}
+                      >
+                        <Icon name={casting && castingWriterId === item._id ? "stop" : "play"}></Icon>
+                        <span></span>
+                        {casting && castingWriterId === item._id ? "Live" : "Cast Screen"}
                       </Button>
                     </ProjectCard>
                   </Col>
