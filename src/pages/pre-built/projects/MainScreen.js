@@ -30,7 +30,7 @@ const MainScreenPage = () => {
 
   return (
     <Content id="main-screen-page">
-      <BlockHead size="sm">
+      {/*<BlockHead size="sm">
         <BlockBetween>
           <BlockHeadContent>
             <BlockTitle page>Login Area</BlockTitle>
@@ -42,7 +42,7 @@ const MainScreenPage = () => {
             </Button>
           </BlockHeadContent>
         </BlockBetween>
-      </BlockHead>
+  </BlockHead>*/}
       <Block>
         <Row className="g-gs">
           <Col lg="12">
