@@ -27,6 +27,7 @@ const WriterScreenPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [padContent, setPadContent] = useState("");
   const [fontSize, setFontSize] = useState(14);
+  const [isCasting, setIsCasting] = useState(false);
   const [events, setEvents] = useState([]);
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
   let token;
@@ -78,7 +79,24 @@ const WriterScreenPage = () => {
       method: "get",
       url: `https://backend-23e46.ondigitalocean.app/event-writer/${decodedData.name}`,
     }).then(res => setEvents(res.data)).catch(() => {console.log('error')})
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    socket.on("cast_screen_request", (request) => {
+      if (request.writerId === data[0]._id) {
+        setIsCasting(true);
+      }
+    });
+  
+    socket.on("stop_cast", () => {
+      setIsCasting(false);
+    });
+  
+    return () => {
+      socket.off("cast_screen_request");
+      socket.off("stop_cast");
+    };
+  }, [data]);  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -133,6 +151,7 @@ const WriterScreenPage = () => {
                   </a>
                 </div>
                 <div className="project-details">
+                {isCasting && <Button color="primary" size="lg">Camera</Button>}
                   <div className="form-control-wrap">
                     <textarea
                       className="form-control form-control-sm"
