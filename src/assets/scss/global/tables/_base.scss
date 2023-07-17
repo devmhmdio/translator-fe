@@ -267,4 +267,15 @@
 .font-size-buttons:hover {
     opacity: 1; /* make the buttons visible when hover over .form-control-wrap */
 }
+
+.font-size-buttons1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(-120%);
+    // transform: translateX(-20%);
+  }
   

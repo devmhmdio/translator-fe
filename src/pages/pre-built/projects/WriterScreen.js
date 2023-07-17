@@ -26,6 +26,7 @@ const WriterScreenPage = () => {
   const [sm, updateSm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [padContent, setPadContent] = useState("");
+  const [fontSize, setFontSize] = useState(14);
   const [events, setEvents] = useState([]);
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
   let token;
@@ -83,6 +84,14 @@ const WriterScreenPage = () => {
     return <div>Loading...</div>;
   }
 
+  const increaseFontSize = () => {
+    setFontSize(fontSize + 1); // Increase by 1px
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize(fontSize - 1); // Decrease by 1px
+  };
+
   return (
     <>
       <Head title="Screens"></Head>
@@ -132,7 +141,13 @@ const WriterScreenPage = () => {
                       rows={25}
                       value={padContent}
                       onChange={(e) => setPadContent(e.target.value)}
+                      style={{ fontSize: `${fontSize}px`, paddingTop: '20px' }}
                     ></textarea>
+                    <div className="font-size-buttons1">
+                      <Button color="primary" onClick={increaseFontSize}>A+</Button>
+                        &nbsp;
+                      <Button color="primary" onClick={decreaseFontSize}>A-</Button>
+                    </div>
                     <br />
                     <Button color="primary" size="lg">
                       Save The Above Translation
