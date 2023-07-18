@@ -22,6 +22,30 @@ export const basicData = {
   ],
 };
 
+export const viewWriterData = {
+  header: ["ITS", "Name", "Actions"],
+  data: [
+    {
+      id: "1",
+      first: "Mark",
+      last: "Otto",
+      handle: "@mdo",
+    },
+    {
+      id: "2",
+      first: "Jacob",
+      last: "Thornton",
+      handle: "@fat",
+    },
+    {
+      id: "3",
+      first: "Larry",
+      last: "the bird",
+      handle: "@twitter",
+    },
+  ],
+};
+
 export const transactionData = {
   header: ["#", "Bill for", "Issue Date", "Due date", "total", "status"],
   data: [

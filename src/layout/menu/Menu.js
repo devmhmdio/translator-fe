@@ -238,6 +238,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
           <MenuItem key="admin" link="admin" icon="monitor" text="Dashboard" />
           <MenuItem key="create event" link="create-event" icon="note-add" text="Create Event" />
           <MenuItem key="add writer" link="add-writer" icon="user-list" text="Add Writers" />
+          <MenuItem key="view writers" link="view-writers" icon="pen" text="View Writers" />
         </>
       )}
     </ul>
