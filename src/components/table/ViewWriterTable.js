@@ -29,8 +29,7 @@ const WriterTable = ({ headColor, striped, border, hover, responsive }) => {
       method: "delete",
       url: `https://backend-23e46.ondigitalocean.app/user/${id}`,
     }).then((res) => {
-      console.log('this is res', res)
-      setWriterData(res.data);
+      alert('Writer Deleted Successfully');
     }).catch((e) => console.log(e));
   }
 
@@ -50,7 +49,7 @@ const WriterTable = ({ headColor, striped, border, hover, responsive }) => {
               <tr key={item._id}>
                 <td>{item.its}</td>
                 <td>{item.name}</td>
-                <td><Button color="danger" onClick={handleWriterDelete(item._id)}><Icon name="trash"></Icon></Button></td>
+                <td><Button color="danger" onClick={() => handleWriterDelete(item._id)}><Icon name="trash"></Icon></Button></td>
               </tr>
             );
           })}
