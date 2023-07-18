@@ -239,6 +239,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
           <MenuItem key="create event" link="create-event" icon="note-add" text="Create Event" />
           <MenuItem key="add writer" link="add-writer" icon="user-list" text="Add Writers" />
           <MenuItem key="view writers" link="view-writers" icon="pen" text="View Writers" />
+          <MenuItem key="add glossary writers" link="add-glossary-writer" icon="user-list" text="Add Glossary Writer" />
         </>
       )}
     </ul>
