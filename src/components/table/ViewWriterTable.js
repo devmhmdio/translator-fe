@@ -30,6 +30,7 @@ const WriterTable = ({ headColor, striped, border, hover, responsive }) => {
       url: `https://backend-23e46.ondigitalocean.app/user/${id}`,
     }).then((res) => {
       alert('Writer Deleted Successfully');
+      window.location.reload();
     }).catch((e) => console.log(e));
   }
 
