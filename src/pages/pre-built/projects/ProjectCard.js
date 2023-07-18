@@ -22,7 +22,6 @@ import axios from "axios";
 import { findUpper } from "../../../utils/Utils";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
 
 const ProjectCardPage = () => {
   const [sm, updateSm] = useState(false);
@@ -91,7 +90,7 @@ const ProjectCardPage = () => {
   };
 
   const handleStopCast = () => {
-    socket.emit("stop_cast");
+    socket.emit("stop_cast", castingWriterId);
     setCasting(false);
     setCastingWriterId(null);
   };

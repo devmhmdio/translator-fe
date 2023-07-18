@@ -68,7 +68,7 @@ const WriterScreenPage = () => {
 
   useEffect(() => {
     if (data[0] && data[0]._id) {
-      socket.emit('update_pad', { writer: data[0]._id, content: padContent });
+      socket.emit("update_pad", { writer: data[0]._id, content: padContent });
     }
   }, [padContent, data]);
 
@@ -78,25 +78,27 @@ const WriterScreenPage = () => {
     axios({
       method: "get",
       url: `https://backend-23e46.ondigitalocean.app/event-writer/${decodedData.name}`,
-    }).then(res => setEvents(res.data)).catch(() => {console.log('error')})
+    })
+      .then((res) => setEvents(res.data))
+      .catch(() => {
+        console.log("error");
+      });
   }, []);
 
   useEffect(() => {
-    socket.on("cast_screen_request", (request) => {
-      if (request.writerId === data[0]._id) {
-        setIsCasting(true);
-      }
-    });
-  
-    socket.on("stop_cast", () => {
-      setIsCasting(false);
-    });
-  
-    return () => {
-      socket.off("cast_screen_request");
-      socket.off("stop_cast");
-    };
-  }, [data]);  
+    if (data[0] && data[0]._id) {
+      const intervalId = setInterval(async () => {
+        try {
+          const isLiveRes = await axios.get(`https://backend-23e46.ondigitalocean.app/isLive/${data[0]._id}`);
+          setIsCasting(isLiveRes.data.isLive);
+        } catch (e) {
+          console.error("Failed to fetch isLive status:", e);
+        }
+      }, 10000); // 10000 milliseconds = 10 seconds
+
+      return () => clearInterval(intervalId);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -118,6 +120,11 @@ const WriterScreenPage = () => {
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle page>{data[0].name}'s Screen</BlockTitle>
+              {isCasting && (
+                <Button className="you-are-live-button" size="lg">
+                  You are live
+                </Button>
+              )}
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
@@ -151,7 +158,6 @@ const WriterScreenPage = () => {
                   </a>
                 </div>
                 <div className="project-details">
-                {isCasting && <Button color="primary" size="lg">Camera</Button>}
                   <div className="form-control-wrap">
                     <textarea
                       className="form-control form-control-sm"
@@ -160,12 +166,16 @@ const WriterScreenPage = () => {
                       rows={25}
                       value={padContent}
                       onChange={(e) => setPadContent(e.target.value)}
-                      style={{ fontSize: `${fontSize}px`, paddingTop: '20px' }}
+                      style={{ fontSize: `${fontSize}px`, paddingTop: "20px" }}
                     ></textarea>
                     <div className="font-size-buttons1">
-                      <Button color="primary" onClick={increaseFontSize}>A+</Button>
-                        &nbsp;
-                      <Button color="primary" onClick={decreaseFontSize}>A-</Button>
+                      <Button color="primary" onClick={increaseFontSize}>
+                        A+
+                      </Button>
+                      &nbsp;
+                      <Button color="primary" onClick={decreaseFontSize}>
+                        A-
+                      </Button>
                     </div>
                     <br />
                     <Button color="primary" size="lg">
@@ -184,19 +194,19 @@ const WriterScreenPage = () => {
           </BlockHeadContent>
           <PreviewCard>
             <Row className="g-gs">
-            {events.map((data) => (
-              <Col sm="6">
-                <Card className="card-bordered" color="light">
-                  <CardHeader>{data.hijriDate} | {data.englishDate}</CardHeader>
-                  <CardBody className="card-inner">
-                    <CardTitle tag="h5">{data.waaz}</CardTitle>
-                    <CardText>
-                      {data.content}
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-            ))}
+              {events.map((data) => (
+                <Col sm="6">
+                  <Card className="card-bordered" color="light">
+                    <CardHeader>
+                      {data.hijriDate} | {data.englishDate}
+                    </CardHeader>
+                    <CardBody className="card-inner">
+                      <CardTitle tag="h5">{data.waaz}</CardTitle>
+                      <CardText>{data.content}</CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              ))}
             </Row>
           </PreviewCard>
         </Block>

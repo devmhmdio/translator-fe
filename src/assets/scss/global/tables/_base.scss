@@ -277,5 +277,20 @@
     top: 0;
     transform: translateY(-120%);
     // transform: translateX(-20%);
-  }
-  
+}
+
+.you-are-live-button {
+    background-color: #164954;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.you-are-live-button:hover {
+    color: #164954;
+    border: 1px solid #164954;
+}
