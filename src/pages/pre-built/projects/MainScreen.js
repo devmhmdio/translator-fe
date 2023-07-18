@@ -14,37 +14,20 @@ const MainScreenPage = () => {
   const [fontSize, setFontSize] = useState(150);
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
 
-  // useEffect(() => {
-  //   socket.on("cast_screen", (padContent) => {
-  //     console.log(`Received cast_screen event: ${padContent}`);
-  //     const words = padContent.split(" ");
-  //     if (words.length > 15) {
-  //       padContent = words.slice(-15).join(" ");
-  //     }
-  //     setContent(padContent);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   useEffect(() => {
     socket.on("cast_screen", (padContent) => {
       console.log(`Received cast_screen event: ${padContent}`);
       const words = padContent.split(" ");
-      
-      if (content !== "No preview available") {
-        setContent(prevContent => prevContent + " " + words.slice(-1));
-      } else {
-        setContent(words.slice(-1));
+      if (words.length > 15) {
+        padContent = words.slice(-15).join(" ");
       }
+      setContent(padContent);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [content]);
+  }, []);
 
   const increaseFontSize = () => {
     setFontSize(fontSize + 1);
