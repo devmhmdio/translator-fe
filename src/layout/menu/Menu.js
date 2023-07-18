@@ -240,6 +240,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
           <MenuItem key="add writer" link="add-writer" icon="user-list" text="Add Writers" />
           <MenuItem key="view writers" link="view-writers" icon="pen" text="View Writers" />
           <MenuItem key="add glossary writers" link="add-glossary-writer" icon="user-list" text="Add Glossary Writer" />
+          <MenuItem key="view glossary writers" link="view-glossary-writer" icon="pen" text="View Glossary Writer" />
         </>
       )}
     </ul>

@@ -19,6 +19,7 @@ import WriterScreenPage from "../pages/pre-built/projects/WriterScreen";
 import CreateNewEvent from "../pages/pre-built/projects/CreateEvent";
 import ViewWriters from "../pages/pre-built/projects/ViewWriters";
 import RegisterNewGlossaryWriterPage from "../pages/pre-built/projects/GlossaryRegisteration";
+import ViewGlossary from "../pages/pre-built/projects/ViewGlossaryWriters";
 
 const Router = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const Router = () => {
           <Route path="create-event" element={<CreateNewEvent />}></Route>
           <Route path="view-writers" element={<ViewWriters />}></Route>
           <Route path="add-glossary-writer" element={<RegisterNewGlossaryWriterPage />}></Route>
+          <Route path="view-glossary-writer" element={<ViewGlossary />}></Route>
           <Route index element={<MainScreenPage/>}></Route>
         </Route>
         <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
