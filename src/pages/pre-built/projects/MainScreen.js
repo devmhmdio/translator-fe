@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Content from "../../../layout/content/Content";
 import {
   Block,
@@ -14,6 +14,7 @@ const MainScreenPage = () => {
   const [fontSize, setFontSize] = useState(150);
   const [displayContent, setDisplayContent] = useState("");
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     socket.on("cast_screen", (padContent) => {
@@ -23,6 +24,10 @@ const MainScreenPage = () => {
       //   padContent = words.slice(-15).join(" ");
       // }
       setContent(padContent);
+
+      if (textareaRef.current) {
+        textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+      }
     });
 
     return () => {
@@ -64,6 +69,7 @@ const MainScreenPage = () => {
                     rows={5}
                     disabled
                     style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none", overflow: "auto" }}
+                    ref={textareaRef}
                   ></textarea>
                   <div className="font-size-buttons">
                     <Button color="primary" onClick={increaseFontSize}>A+</Button>
