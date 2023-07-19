@@ -39,19 +39,6 @@ const MainScreenPage = () => {
 
   return (
     <Content id="main-screen-page">
-      {/*<BlockHead size="sm">
-        <BlockBetween>
-          <BlockHeadContent>
-            <BlockTitle page>Login Area</BlockTitle>
-          </BlockHeadContent>
-          <BlockHeadContent>
-            <Button color="primary" onClick={onLoginClick}>
-              <span>Login</span>
-              <Icon name="user" />
-            </Button>
-          </BlockHeadContent>
-        </BlockBetween>
-      </BlockHead>*/}
       <Block>
         <Row className="g-gs">
           <Col lg="12">
@@ -63,8 +50,8 @@ const MainScreenPage = () => {
                     id="cf-default-textarea"
                     value={content || ""}
                     rows={5}
-                    disabled={true}
-                    style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none" }}
+                    disabled
+                    style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none", overflow: "auto" }}
                   ></textarea>
                   <div className="font-size-buttons">
                     <Button color="primary" onClick={increaseFontSize}>A+</Button>

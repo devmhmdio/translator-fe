@@ -38,8 +38,10 @@ const Login = () => {
         setTimeout(() => {
           if (res.data.user.userRole === "admin") {
             navigate("/admin");
+          } else if (res.data.user.userRole === "glossary_writer") {
+            navigate("/glossary-writer-screen");
           } else {
-            navigate("/writer-screen")
+            navigate("/writer-screen");
           }
         }, 1000);
       } else {

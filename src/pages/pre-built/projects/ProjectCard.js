@@ -26,9 +26,12 @@ import { useNavigate } from "react-router-dom";
 const ProjectCardPage = () => {
   const [sm, updateSm] = useState(false);
   const [data, setData] = useState([]);
+  const [glossaryData, setGlossaryData] = useState([]);
   const [padContent, setPadContent] = useState(null);
   const [casting, setCasting] = useState(false);
   const [castingWriterId, setCastingWriterId] = useState(null);
+  const [castingGlossary, setCastingGlossary] = useState(false);
+  const [castingGlossaryWriterId, setCastingGlossaryWriterId] = useState(null);
   const token = localStorage.getItem("accessToken");
   if (token) {
     const decodedToken = jwt_decode(token);
@@ -52,6 +55,15 @@ const ProjectCardPage = () => {
     })
       .then((res) => {
         setData(res.data.filter((data) => data.userRole === "writer"));
+      })
+      .catch((e) => console.log(e));
+
+    axios({
+      method: "get",
+      url: "https://backend-23e46.ondigitalocean.app/users",
+    })
+      .then((res) => {
+        setGlossaryData(res.data.filter((data) => data.userRole === "glossary_writer"));
       })
       .catch((e) => console.log(e));
   }, []);
@@ -83,16 +95,41 @@ const ProjectCardPage = () => {
     };
   }, []);
 
-  const handleCastScreen = (writerId) => {
-    socket.emit("cast_screen_request", { writerId, pads });
-    setCasting(true);
-    setCastingWriterId(writerId);
+  // const handleCastScreen = (writerId) => {
+  //   socket.emit("cast_screen_request", { writerId, pads });
+  //   setCasting(true);
+  //   setCastingWriterId(writerId);
+  // };
+
+  const handleCastScreen = (writerId, isGlossaryWriter) => {
+    if (isGlossaryWriter) {
+      socket.emit("cast_screen_request", { writerId, pads });
+      setCastingGlossary(true);
+      setCastingGlossaryWriterId(writerId);
+    } else if (!castingGlossary) {
+      // Only cast regular writer screen if glossary writer isn't already casting
+      socket.emit("cast_screen_request", { writerId, pads });
+      setCasting(true);
+      setCastingWriterId(writerId);
+    }
   };
 
-  const handleStopCast = () => {
-    socket.emit("stop_cast", castingWriterId);
-    setCasting(false);
-    setCastingWriterId(null);
+  // const handleStopCast = () => {
+  //   socket.emit("stop_cast", castingWriterId);
+  //   setCasting(false);
+  //   setCastingWriterId(null);
+  // };
+
+  const handleStopCast = (isGlossaryWriter) => {
+    if (isGlossaryWriter) {
+      socket.emit("stop_cast", castingGlossaryWriterId);
+      setCastingGlossary(false);
+      setCastingGlossaryWriterId(null);
+    } else {
+      socket.emit("stop_cast", castingWriterId);
+      setCasting(false);
+      setCastingWriterId(null);
+    }
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,7 +137,10 @@ const ProjectCardPage = () => {
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  let allData = [];
+  allData.push(...glossaryData);
+  allData.push(...data);
+  const currentItems = allData.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -159,27 +199,33 @@ const ProjectCardPage = () => {
                           ></textarea>
                         </div>
                       </div>
-                      {/*<Button
-                        outline={!casting || castingWriterId !== item._id}
-                        color={casting && castingWriterId === item._id ? "white" : "primary"}
+                      <Button
+                        style={
+                          (casting && castingWriterId === item._id) ||
+                          (castingGlossary && castingGlossaryWriterId === item._id)
+                            ? { backgroundColor: "#164954", color: "#fff" }
+                            : { borderColor: "#164954", borderWidth: "1px" }
+                        }
                         onClick={
-                          casting && castingWriterId === item._id ? handleStopCast : () => handleCastScreen(item._id)
+                          (casting && castingWriterId === item._id) ||
+                          (castingGlossary && castingGlossaryWriterId === item._id)
+                            ? () => handleStopCast(item.userRole === "glossary_writer")
+                            : () => handleCastScreen(item._id, item.userRole === "glossary_writer")
                         }
                       >
-                        <Icon name="play"></Icon>
+                        <Icon
+                          name={
+                            (casting && castingWriterId === item._id) ||
+                            (castingGlossary && castingGlossaryWriterId === item._id)
+                              ? "stop"
+                              : "play"
+                          }
+                        ></Icon>
                         <span></span>
-                        {casting && castingWriterId === item._id ? "Live" : "Cast Screen"}
-                      </Button>*/}
-
-                      <Button
-                        style={casting && castingWriterId === item._id 
-                                ? { backgroundColor: '#164954', color: '#fff' } 
-                                : { borderColor: '#164954', borderWidth: '1px' }}
-                        onClick={casting && castingWriterId === item._id ? handleStopCast : () => handleCastScreen(item._id)}
-                      >
-                        <Icon name={casting && castingWriterId === item._id ? "stop" : "play"}></Icon>
-                        <span></span>
-                        {casting && castingWriterId === item._id ? "Live" : "Cast Screen"}
+                        {(casting && castingWriterId === item._id) ||
+                        (castingGlossary && castingGlossaryWriterId === item._id)
+                          ? "Live"
+                          : "Cast Screen"}
                       </Button>
                     </ProjectCard>
                   </Col>
