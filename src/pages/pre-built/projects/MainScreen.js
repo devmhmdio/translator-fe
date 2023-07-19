@@ -12,6 +12,7 @@ import socketIOClient from "socket.io-client";
 const MainScreenPage = () => {
   const [content, setContent] = useState("No preview available");
   const [fontSize, setFontSize] = useState(150);
+  const [displayContent, setDisplayContent] = useState("");
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
 
   // useEffect(() => {
