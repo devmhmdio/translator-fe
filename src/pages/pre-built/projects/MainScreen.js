@@ -16,35 +16,35 @@ const MainScreenPage = () => {
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
   const textareaRef = useRef(null);
 
-  // useEffect(() => {
-  //   socket.on("cast_screen", (padContent) => {
-  //     console.log(`Received cast_screen event: ${padContent}`);
-  //     // const words = padContent.split(" ");
-  //     // if (words.length > 15) {
-  //     //   padContent = words.slice(-15).join(" ");
-  //     // }
-  //     setContent(padContent);
-
-  //     if (textareaRef.current) {
-  //       textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
-  //     }
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  // In your useEffect hook:
   useEffect(() => {
-    socket.on("cast_screen", (word) => {
-      setDisplayContent((prev) => prev + " " + word);
+    socket.on("cast_screen", (padContent) => {
+      console.log(`Received cast_screen event: ${padContent}`);
+      // const words = padContent.split(" ");
+      // if (words.length > 15) {
+      //   padContent = words.slice(-15).join(" ");
+      // }
+      setContent(padContent);
+
+      if (textareaRef.current) {
+        textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+      }
     });
 
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  // In your useEffect hook:
+  // useEffect(() => {
+  //   socket.on("cast_screen", (word) => {
+  //     setDisplayContent((prev) => prev + " " + word);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   const increaseFontSize = () => {
     setFontSize(fontSize + 1);
