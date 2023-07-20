@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
 import {
   Block,
@@ -8,43 +8,26 @@ import {
   Button,
 } from "../../../components/Component";
 import socketIOClient from "socket.io-client";
+import _ from "lodash";
 
 const MainScreenPage = () => {
   const [content, setContent] = useState("No preview available");
   const [fontSize, setFontSize] = useState(150);
-  const [displayContent, setDisplayContent] = useState("");
   const socket = socketIOClient("https://backend-23e46.ondigitalocean.app");
-  const textareaRef = useRef(null);
+
+  const debouncedSetContent = _.throttle((padContent) => {
+    const words = padContent.split(" ");
+    const latestWords = words.length > 12 ? words.slice(-12) : words;
+    setContent(latestWords.join(" "));
+  }, 1000);
 
   useEffect(() => {
-    socket.on("cast_screen", (padContent) => {
-      console.log(`Received cast_screen event: ${padContent}`);
-      // const words = padContent.split(" ");
-      // if (words.length > 15) {
-      //   padContent = words.slice(-15).join(" ");
-      // }
-      setContent(padContent);
-
-      if (textareaRef.current) {
-        textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
-      }
-    });
+    socket.on("cast_screen", debouncedSetContent);
 
     return () => {
       socket.disconnect();
     };
   }, []);
-
-  // In your useEffect hook:
-  // useEffect(() => {
-  //   socket.on("cast_screen", (word) => {
-  //     setDisplayContent((prev) => prev + " " + word);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   const increaseFontSize = () => {
     setFontSize(fontSize + 1);
@@ -62,15 +45,12 @@ const MainScreenPage = () => {
             <ProjectCard>
               <div className="project-details">
                 <div className="form-control-wrap">
-                  <textarea
-                    className="form-control form-control-sm main-screen"
-                    id="cf-default-textarea"
-                    value={content || ""}
-                    rows={5}
-                    disabled
-                    style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none", overflow: "auto" }}
-                    ref={textareaRef}
-                  ></textarea>
+                  <p
+                    className="main-screen"
+                    style={{ fontSize: `${fontSize}px`, color: "#000", backgroundColor: "#fff", border: "none", overflow: "auto", whiteSpace: "pre-wrap" }}
+                  >
+                    {content || ""}
+                  </p>
                   <div className="font-size-buttons">
                     <Button color="primary" onClick={increaseFontSize}>A+</Button>
                     &nbsp;
