@@ -19,7 +19,7 @@ const MainScreenPage = () => {
     const words = padContent.split(" ");
     const latestWords = words.length > 12 ? words.slice(-12) : words;
     setContent(latestWords.join(" "));
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     socket.on("cast_screen", debouncedSetContent);
